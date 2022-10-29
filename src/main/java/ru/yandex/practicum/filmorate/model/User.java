@@ -5,8 +5,8 @@ import lombok.Data;
 
 import org.jetbrains.annotations.NotNull;
 
-//import javax.validation.constraints.Email;
-//import javax.validation.constraints.NotBlank;
+import javax.validation.constraints.Email;
+import javax.validation.constraints.NotBlank;
 import java.time.LocalDate;
 
 @Data
@@ -18,32 +18,19 @@ public class User {
     private final int id;
 
     @NotNull
-  //  @Email
+    @Email
     private final String email;
 
     @NotNull
-  //  @NotBlank
+    @NotBlank
     private final String login;
 
     @NotNull
- //   @NotBlank
+    @NotBlank
     private final String name;
 
     @NotNull
     private final LocalDate birthday;
 
-/*
-    public User(@NotNull int id, @NotNull @Email String email, @NotNull @NotBlank String login, @NotNull @NotBlank String name, @NotNull LocalDate birthday) {
 
-        this.id = id;
-        this.email = email;
-        this.login = login;
-        this.name = name;
-        this.birthday = birthday;
-    }
-
-    public User() {
-
-    }
- */
 }
