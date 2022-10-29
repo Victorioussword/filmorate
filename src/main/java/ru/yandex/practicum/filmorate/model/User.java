@@ -15,7 +15,7 @@ public class User {
 
 
     @NotNull
-    private final int id;
+    private  int id;
 
     @NotNull
     @Email

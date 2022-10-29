@@ -13,6 +13,7 @@ import java.util.Map;
 @RequestMapping("/users")
 public class UserController {
     Map<Integer, User> users = new HashMap<>();
+    int id = 1;
 
     @GetMapping
     public Map<Integer, User> getUsers(){
@@ -20,6 +21,7 @@ public class UserController {
     }
     @PostMapping
     public User postUser(@RequestBody User user){
+        user.setId(id++);
         users.put(user.getId(), user);
         return user;
     }

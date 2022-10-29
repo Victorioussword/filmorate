@@ -11,17 +11,18 @@ import java.util.Map;
 @RestController
 @RequestMapping("/films")
 public class FilmController {
-
+    int id = 1;
     Map<Integer, Film> films = new HashMap<>();
+
 
     @GetMapping
     public Map<Integer, Film> getUsers(){
         return films;
     }
 
-
     @PostMapping
     public Film postUser(@RequestBody Film film){
+        film.setId(id++);
         films.put(film.getId(), film);
         return film;
     }

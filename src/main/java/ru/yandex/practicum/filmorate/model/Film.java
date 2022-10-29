@@ -2,6 +2,7 @@ package ru.yandex.practicum.filmorate.model;
 
 import lombok.AllArgsConstructor;
 import lombok.Data;
+import lombok.Setter;
 import org.jetbrains.annotations.NotNull;
 
 import javax.validation.constraints.NotBlank;
@@ -12,8 +13,9 @@ import java.time.LocalDate;
 @AllArgsConstructor
 public class Film {
 
+    @Setter
     @NotNull
-    final private int id;
+    private int id;
 
     @NotNull
     @NotBlank
