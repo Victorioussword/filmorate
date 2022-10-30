@@ -15,7 +15,6 @@ import java.util.List;
 import java.util.Map;
 
 
-
 //@Slf4j
 @RestController
 @RequestMapping("/users")
@@ -28,33 +27,57 @@ public class UserController {
 
     @GetMapping
     public Map<Integer, User> getUsers() {
-        log.info("GET /users. Количество пользователей: {}",users.size());
+        log.info("GET /users. Количество пользователей: {}", users.size());
         return users;
     }
 
     @PostMapping
     public User postUser(@Valid @RequestBody User user) {
         user.setId(id++);
-        users.put(user.getId(), user);
         ageCheck(user);
-        log.info("POST /users. Количество пользователей: {}",users.size());
+        loginCheck(user);
+        //   nameCheck(user);
+        users.put(user.getId(), user);
+        log.info("POST /users. Количество пользователей: {}", users.size());
         return user;
     }
 
     @PutMapping
     public User putUser(@Valid @RequestBody User user) {
-        users.put(user.getId(), user);
-        log.info("PUT /users. Количество пользователей: {}",users.size());
+        ageCheck(user);
+        loginCheck(user);
+        User userOkName = emptyNameCheck(user);
+        if (users.containsKey(userOkName.getId())){
+            throw new InputDataException("Обновление пользователя не возможно");
+        }
+        users.put(userOkName.getId(), userOkName);
+        log.info("PUT /users. Количество пользователей: {}", users.size());
+        return userOkName;
+    }
+
+
+    private void ageCheck(@Valid @RequestBody User user) {
+        LocalDate currentDay = LocalDate.now();
+        if (currentDay.isBefore(user.getBirthday())) {
+            throw new InputDataException("Указан не корректный возраст");
+        }
+    }
+
+    private void loginCheck(@Valid @RequestBody User user) {
+        String login = user.getLogin();
+        if (login.contains(" ")) {
+            throw new InputDataException("Указан не корректный логин");
+        }
+    }
+
+    private User emptyNameCheck(@Valid @RequestBody User user) {
+        String name = user.getName();
+        if (name.isBlank() || name.equals(null)) {
+            user.setName(user.getLogin());
+        }
         return user;
     }
 
 
-    private void ageCheck(User user) {
-        LocalDate currentDay = LocalDate.now();
-        if (currentDay.isBefore(user.getBirthday())) {
-             throw new InputDataException("Указан не корректный возраст");
-        }
-    }
-
-
 }
+

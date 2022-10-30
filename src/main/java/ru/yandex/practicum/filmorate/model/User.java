@@ -19,6 +19,7 @@ public class User {
 
     @NotNull
     @Email
+    @NotBlank
     private final String email;
 
     @NotNull
@@ -27,7 +28,7 @@ public class User {
 
     @NotNull
     @NotBlank
-    private final String name;
+    private String name;
 
     @NotNull
     private final LocalDate birthday;
