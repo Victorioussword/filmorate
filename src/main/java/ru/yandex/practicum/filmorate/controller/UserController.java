@@ -1,8 +1,10 @@
 package ru.yandex.practicum.filmorate.controller;
 
 import org.springframework.web.bind.annotation.*;
+import ru.yandex.practicum.filmorate.exception.InputDataException;
 import ru.yandex.practicum.filmorate.model.User;
 
+import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -16,11 +18,12 @@ public class UserController {
     int id = 1;
 
     @GetMapping
-    public Map<Integer, User> getUsers(){
+    public Map<Integer, User> getUsers() {
         return users;
     }
+
     @PostMapping
-    public User postUser(@RequestBody User user){
+    public User postUser(@RequestBody User user) {
         user.setId(id++);
         users.put(user.getId(), user);
         return user;
@@ -30,5 +33,14 @@ public class UserController {
     public User putUser(@RequestBody User user) {
         users.put(user.getId(), user);
         return user;
+    }
+
+
+    private void checker(User user) {
+        LocalDate currentDay = LocalDate.now();
+
+        if (currentDay.isBefore(user.getBirthday())) {
+            throw new InputDataException("Указан не корректный возраст");
+        }
     }
 }

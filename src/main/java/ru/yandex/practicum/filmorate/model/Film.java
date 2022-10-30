@@ -32,3 +32,5 @@ public class Film {
     @Positive
     final private long duration;
 }
+
+// это должно исчезнуть
