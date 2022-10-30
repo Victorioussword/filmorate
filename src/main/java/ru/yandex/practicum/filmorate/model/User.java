@@ -13,7 +13,6 @@ import java.time.LocalDate;
 @AllArgsConstructor
 public class User {
 
-
     @NotNull
     private  int id;
 
@@ -32,6 +31,4 @@ public class User {
 
     @NotNull
     private final LocalDate birthday;
-
-
 }

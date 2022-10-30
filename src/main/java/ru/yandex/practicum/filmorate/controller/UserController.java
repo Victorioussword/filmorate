@@ -4,7 +4,7 @@ import lombok.extern.slf4j.Slf4j;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.web.bind.annotation.*;
-import ru.yandex.practicum.filmorate.exception.InputDataException;
+import ru.yandex.practicum.filmorate.exception.ValidationException;
 import ru.yandex.practicum.filmorate.model.User;
 
 import javax.validation.Valid;
@@ -36,7 +36,6 @@ public class UserController {
         user.setId(id++);
         ageCheck(user);
         loginCheck(user);
-        //   nameCheck(user);
         users.put(user.getId(), user);
         log.info("POST /users. Количество пользователей: {}", users.size());
         return user;
@@ -47,9 +46,12 @@ public class UserController {
         ageCheck(user);
         loginCheck(user);
         User userOkName = emptyNameCheck(user);
-        if (users.containsKey(userOkName.getId())){
-            throw new InputDataException("Обновление пользователя не возможно");
+
+        if (!users.containsKey(userOkName.getId())){
+            log.info("Обновление не существующей задачи {}", userOkName.toString());
+            throw new ValidationException ("Обновление не существующей задачи");
         }
+
         users.put(userOkName.getId(), userOkName);
         log.info("PUT /users. Количество пользователей: {}", users.size());
         return userOkName;
@@ -59,14 +61,16 @@ public class UserController {
     private void ageCheck(@Valid @RequestBody User user) {
         LocalDate currentDay = LocalDate.now();
         if (currentDay.isBefore(user.getBirthday())) {
-            throw new InputDataException("Указан не корректный возраст");
+            log.info("Не корректная дата рождения. Введено {}", user.getBirthday());
+            throw new ValidationException ("Указана не корректная дата рождения");
         }
     }
 
     private void loginCheck(@Valid @RequestBody User user) {
         String login = user.getLogin();
         if (login.contains(" ")) {
-            throw new InputDataException("Указан не корректный логин");
+            log.info("Не корректный логин. Введено {}", user.getLogin());
+            throw new ValidationException ("Указан не корректный логин");
         }
     }
 
