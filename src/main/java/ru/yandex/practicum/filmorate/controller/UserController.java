@@ -9,10 +9,7 @@ import ru.yandex.practicum.filmorate.model.User;
 
 import javax.validation.Valid;
 import java.time.LocalDate;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 
 //@Slf4j
@@ -26,9 +23,10 @@ public class UserController {
     int id = 1;
 
     @GetMapping
-    public Map<Integer, User> getUsers() {
+    public Collection<User> getUsers() {
         log.info("GET /users. Количество пользователей: {}", users.size());
-        return users;
+        System.out.println("!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!");
+        return users.values();
     }
 
     @PostMapping
